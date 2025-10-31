@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Henry Huang · Personal Portfolio</title>
+  <link href="dist/output.css" rel="stylesheet" />
+  <style>
+    :root{ --accent:#0078D4; }
+    .bg-fluid {
+      position: fixed; inset: -20% -10% -10% -10%;
+      background:
+        radial-gradient(40% 40% at 20% 20%, rgba(0,120,212,0.25), transparent 60%),
+        radial-gradient(40% 40% at 80% 10%, rgba(0,120,212,0.20), transparent 60%),
+        radial-gradient(35% 35% at 60% 80%, rgba(0,120,212,0.18), transparent 60%),
+        linear-gradient(45deg, #F5F7FA 0%, #ffffff 100%);
+      z-index: -1;
+      animation: flow 16s ease-in-out infinite alternate;
+    }
+    @keyframes flow { 0% { transform: translateY(-2%) } 100% { transform: translateY(2%) } }
+  </style>
+</head>
+<body class="min-h-screen font-ui text-slate-800">
+  <div class="bg-fluid"></div>
+
+  <!-- 顶部导航 -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/60 border-b border-white/30">
+    <nav class="mx-auto max-w-6xl flex justify-between items-center px-4 py-3">
+      <h1 class="font-semibold tracking-wide">Henry Huang</h1>
+      <ul class="flex gap-4 text-sm">
+        <li><a href="#about" class="hover:text-[var(--accent)]">关于我</a></li>
+        <li><a href="#projects" class="hover:text-[var(--accent)]">项目</a></li>
+        <li><a href="#skills" class="hover:text-[var(--accent)]">技能</a></li>
+        <li><a href="#timeline" class="hover:text-[var(--accent)]">时间线</a></li>
+        <li><a href="#contact" class="hover:text-[var(--accent)]">联系</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-4 pt-20 pb-24">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-glass p-8">
+        <p class="text-xs uppercase tracking-widest text-slate-500">Where logic meets creativity</p>
+        <h2 class="mt-2 text-4xl md:text-5xl font-bold leading-tight">
+          Henry Huang（黄仁亨）
+          <span class="text-[var(--accent)]">· 数据与产品</span>
+        </h2>
+        <p class="mt-4 text-slate-600">
+          UCSD 经济学 + 数据科学。用数据驱动决策，用设计传达价值。
+        </p>
+        <div class="mt-6 flex gap-3">
+          <a href="#projects" class="rounded-xl bg-[var(--accent)] text-white px-4 py-2 text-sm hover:opacity-90 transition">查看项目</a>
+          <a href="#contact" class="rounded-xl border border-slate-300/70 bg-white/70 px-4 py-2 text-sm hover:border-[var(--accent)] transition">联系我</a>
+        </div>
+      </div>
+      <div class="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-glass p-8">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-white/40 bg-white/80 p-4">
+            <p class="text-xs text-slate-500">近期方向</p>
+            <p class="mt-1 font-semibold">产品运营 / 用户增长</p>
+          </div>
+          <div class="rounded-2xl border border-white/40 bg-white/80 p-4">
+            <p class="text-xs text-slate-500">关键词</p>
+            <p class="mt-1 font-semibold">Fluent · ROI · 数据驱动</p>
+          </div>
+          <div class="rounded-2xl border border-white/40 bg-white/80 p-4">
+            <p class="text-xs text-slate-500">邮箱</p>
+            <p class="mt-1 font-semibold">henry@domain.com</p>
+          </div>
+          <div class="rounded-2xl border border-white/40 bg-white/80 p-4">
+            <p class="text-xs text-slate-500">所在地</p>
+            <p class="mt-1 font-semibold">San Diego, CA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="mx-auto max-w-6xl px-4 pb-20">
+    <h2 class="text-2xl font-bold mb-6">项目</h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <article class="rounded-2xl border border-white/30 bg-white/70 backdrop-blur-xl shadow-glass p-6">
+        <h3 class="font-semibold">指数标签系统（实证）</h3>
+        <p class="mt-2 text-sm text-slate-600">基于 LLM + 因子库的标签体系，支持行业轮动与指数增强。</p>
+      </article>
+      <article class="rounded-2xl border border-white/30 bg-white/70 backdrop-blur-xl shadow-glass p-6">
+        <h3 class="font-semibold">电商爆款冷启动</h3>
+        <p class="mt-2 text-sm text-slate-600">ROI≥4 & 毛利≥30% 筛选模型，结合抖音千川广告测试。</p>
+      </article>
+      <article class="rounded-2xl border border-white/30 bg-white/70 backdrop-blur-xl shadow-glass p-6">
+        <h3 class="font-semibold">城市通勤地图</h3>
+        <p class="mt-2 text-sm text-slate-600">GeoPandas 可视化美国县级通勤时长与城市经济结构。</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="mx-auto max-w-6xl px-4 pb-20">
+    <div class="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-glass p-8">
+      <h2 class="text-2xl font-bold mb-4">技能</h2>
+      <div class="flex flex-wrap gap-2 text-sm">
+        <span class="rounded-xl border border-white/40 bg-white/80 px-3 py-1">Python</span>
+        <span class="rounded-xl border border-white/40 bg-white/80 px-3 py-1">SQL</span>
+        <span class="rounded-xl border border-white/40 bg-white/80 px-3 py-1">TailwindCSS</span>
+        <span class="rounded-xl border border-white/40 bg-white/80 px-3 py-1">用户增长</span>
+        <span class="rounded-xl border border-white/40 bg-white/80 px-3 py-1">数据分析</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section id="timeline" class="mx-auto max-w-6xl px-4 pb-20">
+    <div class="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-glass p-8">
+      <h2 class="text-2xl font-bold mb-6">时间线</h2>
+      <ol class="relative border-s border-slate-200/70 pl-6 space-y-6">
+        <li>
+          <div class="absolute -left-2 top-1.5 h-4 w-4 rounded-full bg-[var(--accent)]"></div>
+          <p class="text-sm text-slate-500">2025</p>
+          <p class="font-medium">量化实习 · 指数增强研究</p>
+        </li>
+        <li>
+          <div class="absolute -left-2 top-[5.25rem] h-4 w-4 rounded-full bg-[var(--accent)]"></div>
+          <p class="text-sm text-slate-500">2024</p>
+          <p class="font-medium">电商项目冷启动 · ROI 验证</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 联系 -->
+  <section id="contact" class="mx-auto max-w-6xl px-4 pb-20">
+    <div class="rounded-3xl border border-white/30 bg-white/60 backdrop-blur-xl shadow-glass p-8 text-center">
+      <h2 class="text-2xl font-bold mb-2">联系我</h2>
+      <p class="text-slate-600">邮箱(Email)：huangrenheng015@gmail.com · 微信(Wechat)：HenryHuang2025</p>
+    </div>
+  </section>
+
+  <footer class="pb-10 text-center text-xs text-slate-500">
+    © 2025 Henry Huang · Built with Tailwind & Fluent Design
+  </footer>
+</body>
+</html>
