@@ -36,16 +36,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
           document.documentElement.classList.remove("dark");
         }
       } else {
-        // Detect system preference
-        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-        const initialTheme = systemPrefersDark ? "dark" : "light";
-        setThemeState(initialTheme);
-        // Apply system theme immediately
-        if (initialTheme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+        // Default to light mode if no saved preference
+        setThemeState("light");
+        document.documentElement.classList.remove("dark");
       }
     }
   }, []);
