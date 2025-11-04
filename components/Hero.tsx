@@ -151,7 +151,7 @@ export default function Hero() {
               asChild
               className="h-14 md:h-16 px-10 md:px-12 text-base md:text-lg bg-[#052659]/10 dark:bg-slate-700/10 backdrop-blur-md border border-[#052659]/20 dark:border-slate-600/20 hover:bg-[#052659]/20 dark:hover:bg-slate-700/20 text-[#052659] dark:text-slate-200 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
             >
-              <Link href={heroConfig.resumePath} download="Henry Resume 10.9.pdf.pdf" target="_blank" rel="noopener noreferrer">
+              <Link href={heroConfig.resumePath} download="Henry Resume.pdf 11.5.pdf" target="_blank" rel="noopener noreferrer">
                 <span className="absolute inset-0 bg-gradient-to-r from-[#052659]/0 via-[#052659]/20 to-[#052659]/0 dark:from-slate-400/0 dark:via-slate-400/20 dark:to-slate-400/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
                 <Download className="w-6 h-6 md:w-7 md:h-7 mr-2 transition-transform duration-300 group-hover:rotate-12 relative z-10" />
                 <span className="relative z-10">{t("hero", "downloadCV")}</span>
