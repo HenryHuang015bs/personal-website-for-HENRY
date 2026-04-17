@@ -7,28 +7,50 @@ export default function StagewiseInit() {
   const [showStatus, setShowStatus] = useState(true);
 
   useEffect(() => {
-    // 只在开发环境（localhost）中检查 Stagewise
-    const isLocalhost =
-      typeof window !== 'undefined' &&
-      (window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1' ||
-        window.location.hostname === '');
-
-    if (!isLocalhost) {
-      setShowStatus(false);
-      return; // 生产环境不加载
+    // 确保在客户端运行
+    if (typeof window === 'undefined') {
+      console.log('⚠️ StagewiseInit: window 未定义，跳过初始化（服务器端渲染）');
+      return;
     }
 
-    console.log('%c🔍 Stagewise 诊断信息', 'font-size: 16px; font-weight: bold; color: #007acc;');
+    // 在开发环境和预览环境中检查 Stagewise（包括 Vercel 预览部署）
+    const hostname = window.location.hostname;
+    const isLocalhost =
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      hostname === '' ||
+      hostname === '::1'; // IPv6 localhost
+
+    // 允许在 Vercel 预览部署中使用（*.vercel.app）
+    const isVercelPreview = hostname.includes('vercel.app');
+
+    // 允许在开发环境或预览环境中运行
+    const isDevOrPreview = isLocalhost || isVercelPreview;
+
+    // 添加调试信息
+    console.log('%c🔍 Stagewise 环境检查', 'font-size: 16px; font-weight: bold; color: #007acc;');
     console.log('📋 环境信息:', {
-      hostname: window.location.hostname,
+      hostname: hostname,
       port: window.location.port || '3000',
       protocol: window.location.protocol,
       url: window.location.href,
+      isLocalhost: isLocalhost,
+      isVercelPreview: isVercelPreview,
+      isDevOrPreview: isDevOrPreview,
       userAgent: navigator.userAgent.includes('Chrome') ? 'Chrome' : 'Other',
       isSecureContext: window.isSecureContext,
       locationOrigin: window.location.origin,
     });
+
+    if (!isDevOrPreview) {
+      console.log('%c⚠️ Stagewise 未在开发/预览环境中运行，已禁用', 'color: orange; font-weight: bold;');
+      console.log('当前环境:', hostname);
+      console.log('提示: Stagewise 仅在 localhost 或 Vercel 预览环境中运行');
+      setShowStatus(false);
+      return; // 生产环境不加载（除非是 Vercel 预览）
+    }
+
+    console.log('%c✅ Stagewise 环境检查通过，开始初始化', 'font-size: 16px; font-weight: bold; color: green;');
 
     // 检查是否有来自扩展的消息监听器
     let extensionDetected = false;
@@ -52,13 +74,14 @@ export default function StagewiseInit() {
       
       // 检查是否通过 content script 注入
       // 扩展可能通过 Chrome 扩展 API 注入
+      // 注意：只进行被动检测，不主动调用任何 runtime API，避免触发 runtime.connect() 错误
       try {
+        // 只检查 chrome 对象是否存在，不调用任何方法
         if (typeof chrome !== 'undefined' && chrome.runtime) {
-          const extensions = chrome.runtime.getManifest?.();
-          if (extensions) {
-            console.log('✅ 检测到 Chrome 扩展环境');
-            extensionDetected = true;
-          }
+          // 不调用 getManifest() 或其他可能触发连接的方法
+          // 只检查对象是否存在
+          console.log('✅ 检测到 Chrome 扩展环境（被动检测）');
+          extensionDetected = true;
         }
       } catch (e) {
         // 忽略错误
@@ -311,33 +334,9 @@ export default function StagewiseInit() {
     setTimeout(checkStagewise, 5000);
     setTimeout(checkStagewise, 10000);
     
-    // 主动发送消息给扩展（如果扩展监听 postMessage）
-    const tryPostMessageToExtension = () => {
-      try {
-        // 尝试向扩展发送初始化消息
-        window.postMessage(
-          {
-            type: 'STAGEWISE_INIT',
-            source: 'page',
-            timestamp: Date.now(),
-          },
-          '*'
-        );
-        
-        // 尝试发送连接请求
-        window.postMessage(
-          {
-            type: 'STAGEWISE_CONNECT',
-            source: 'page',
-            port: window.location.port || '3000',
-            origin: window.location.origin,
-          },
-          '*'
-        );
-      } catch (e) {
-        // 忽略错误
-      }
-    };
+    // 注意：移除主动发送消息给扩展，避免触发任何连接尝试
+    // 扩展应该自动注入并监听，不需要页面主动触发
+    // 如果扩展需要初始化，它应该通过 content script 自动完成
 
     // 监听来自扩展的消息
     const messageHandler = (event: MessageEvent) => {
@@ -357,24 +356,8 @@ export default function StagewiseInit() {
     
     window.addEventListener('message', messageHandler);
 
-    // 尝试通过 WebSocket 连接到扩展（如果扩展使用 WebSocket）
-    const tryWebSocketConnection = () => {
-      const wsPorts = [3000, 3001, 8080, 8081];
-      wsPorts.forEach((port) => {
-        try {
-          const ws = new WebSocket(`ws://localhost:${port}`);
-          ws.onopen = () => {
-            console.log(`✅ WebSocket 连接到端口 ${port} 成功`);
-            ws.close();
-          };
-          ws.onerror = () => {
-            // 连接失败，继续尝试下一个
-          };
-        } catch (e) {
-          // 忽略错误
-        }
-      });
-    };
+    // 注意：移除 WebSocket 连接尝试，避免产生连接错误
+    // 扩展应该通过 content script 注入，而不是通过 WebSocket 连接
 
     // 定期检查扩展是否已连接
     let checkCount = 0;
@@ -408,24 +391,11 @@ export default function StagewiseInit() {
       clearInterval(intervalId);
     }, 60000);
     
-    // 延迟尝试 WebSocket 连接（给扩展时间初始化）
-    setTimeout(tryWebSocketConnection, 3000);
-    
-    // 立即尝试发送消息给扩展
-    tryPostMessageToExtension();
-    
-    // 定期尝试发送连接消息（每 3 秒一次，持续 30 秒）
-    const postMessageInterval = setInterval(() => {
-      tryPostMessageToExtension();
-    }, 3000);
-    
-    setTimeout(() => {
-      clearInterval(postMessageInterval);
-    }, 30000);
+    // 注意：移除所有主动连接尝试（WebSocket、postMessage 等）
+    // 组件完全被动，只检测扩展是否已存在，不触发任何连接
     
     return () => {
       clearInterval(intervalId);
-      clearInterval(postMessageInterval);
       window.removeEventListener('message', messageHandler);
     };
   }, []);

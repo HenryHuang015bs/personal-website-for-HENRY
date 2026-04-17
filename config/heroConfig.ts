@@ -17,7 +17,7 @@ export const heroConfig = {
     linkedin: "https://www.linkedin.com/in/henryhuang015",
     wechat: "/截屏2025-11-02 00.08.24.png"
   },
-  resumePath: "/Henry Resume.pdf 11.5.pdf",
+  resumePath: "/黄仁亨-市场运营-简历.pdf",
   portraitPath: "/portrait.jpg"
 };
 
